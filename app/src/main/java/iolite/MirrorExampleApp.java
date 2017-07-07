@@ -1,5 +1,7 @@
 package iolite;
 
+
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,91 +60,7 @@ import de.iolite.insys.mirror.ViewRegistrator.TemplateConfig;
  */
 public class MirrorExampleApp extends AbstractIOLITEApp {
 
-	private interface WeatherStationState extends DeviceAPIObserver {
-
-	}
-/*
-	private final class WeatherStationNotConfigured implements WeatherStationState {
-
-		@Override
-		public void addedToDevices(@Nonnull final Device device) {
-			if (device.getProfileIdentifier().equals(DriverConstants.PROFILE_WeatherStation_ID)) {
-				setWeatherStationState(new WeatherStationConfigured(device));
-			}
-		}
-
-		@Override
-		public void removedFromDevices(@Nonnull final Device device) {
-			// nothing to do
-		}
-	}
-
-	private final class WeatherStationConfigured implements WeatherStationState, WeatherDataObserver {
-
-		/** Defines how long to wait for further value updates before processing the new values */
-		private static final int VALUE_UPDATES_COLLECTION_DELAY = 3000;
-
-		@Nonnull
-		private final ObjectMapper mapper = new ObjectMapper();
-		@Nonnull
-		private final Device weatherStation;
-		@Nonnull
-		private final WeatherstationDeviceObserver weatherManager;
-		@Nonnull
-		private final Object weatherDataUpdateTimerLock = new Object();
-		@Nonnull
-		private Timer weatherDataUpdateTimer = new Timer();
-
-		private WeatherStationConfigured(@Nonnull final Device weatherStation) {
-			this.weatherStation = weatherStation;
-			this.weatherManager = new WeatherstationDeviceObserver(weatherStation, this);
-		}
-
-		@Override
-		public void onUpdate(@Nonnull final WeatherData weatherData) {
-			synchronized (this.weatherDataUpdateTimerLock) {
-				this.weatherDataUpdateTimer.cancel();
-				// probably multiple properties gets updated in a row. Collect updates first and then send update
-				final TimerTask weatherDataUpdateTask = new TimerTask() {
-
-					@Override
-					public void run() {
-						try {
-							LOG.debug("Send updated weather data to mirror");
-							final String weatherDataJson;
-							weatherDataJson = WeatherStationConfigured.this.mapper.writeValueAsString(weatherData);
-							final TemplateConfig weatherDataTemplateConf = new TemplateConfig(VIEW_TEMPLATE_WEATHERDATA, VIEW_WEBPATH_WEATHERDATA);
-							weatherDataTemplateConf.putReplacement("null", weatherDataJson);
-							MirrorExampleApp.this.viewRegistrator.updateTemplatePage(weatherDataTemplateConf);
-						}
-						catch (final JsonProcessingException e) {
-							LOG.error("Failed to convert weatherData object into json string!", e);
-						}
-					}
-				};
-				this.weatherDataUpdateTimer = new Timer();
-				this.weatherDataUpdateTimer.schedule(weatherDataUpdateTask, VALUE_UPDATES_COLLECTION_DELAY);
-			}
-		}
-
-		@Override
-		public void addedToDevices(@Nonnull final Device device) {
-			// nothing to do
-		}
-
-		@Override
-		public void removedFromDevices(@Nonnull final Device device) {
-			// Validate.notNull(device, "Parameter 'device' mustn't be null.");
-			if (this.weatherStation.equals(device)) {
-				setWeatherStationState(new WeatherStationNotConfigured());
-				this.weatherManager.dispose();
-			}
-		}
-
-
-	}
-
-	private static final Logger LOG = LoggerFactory.getLogger(MirrorExampleApp.class);
+	//private static final Logger LOG = LoggerFactory.getLogger(MirrorExampleApp.class);
 	private static final String RES_BASE = "de/iolite/insys/mirror/";
 	private static final String RES_QUOTES = RES_BASE + "quotes.csv";
 	private static final String HTML_RESOURCES = RES_BASE + "html/";
@@ -155,43 +73,16 @@ public class MirrorExampleApp extends AbstractIOLITEApp {
 	private static final String MSG_ERR_RETRIEVE_DEVICEAPI = "Could not retrieve instance of DeviceAPI!";
 	private static final String MSG_ERR_REGISTER_FRONTEND_RESOURCES = "An error appeared during the registration of frontend resources. This could result in errors when trying to display the app gui!";
 
-	private static final String VIEW_ID_CLOCK = "DateTimeView";
-	private static final String ICON_RESPATH_CLOCK = VIEW_RESOURCES + "clock-icon.jpg";
-	private static final String VIEW_RESPATH_CLOCK = VIEW_RESOURCES + "clock.html";
-
-	private static final String VIEW_ID_WELCOME = "WelcomeView";
-	private static final String ICON_RESPATH_WELCOME = VIEW_RESOURCES + "welcome.png";
-	private static final String VIEW_RESPATH_WELCOME = VIEW_RESOURCES + "welcome.html";
-	private static final String VIEW_TEMPLATE_WELCOME = VIEW_RESOURCES + "welcome.template";
-	private static final String VIEW_WEBPATH_WELCOME = "welcome.html";
-
-	private static final String VIEW_ID_HELLO_WORLD = "WelcomeWorldView";
-	private static final String ICON_RESPATH_HELLO_WORLD = VIEW_RESOURCES + "welcome_friends.jpg";
-	private static final String VIEW_RESPATH_HELLO_WORLD = VIEW_RESOURCES + "welcome_world.html";
-
 	//Das hier brauchen wir ...
 	private static final String VIEW_ID_QUOTE = "QuoteView";
 	private static final String ICON_RESPATH_QUOTE = VIEW_RESOURCES + "quote.png";
 	private static final String VIEW_TEMPLATE_QUOTE = VIEW_RESOURCES + "quote.template";
 	private static final String VIEW_WEBPATH_QUOTE = "quote.html";
 
-	private static final String VIEW_ID_WEATHER = "WeatherView";
-	private static final String ICON_RESPATH_WEATHER = VIEW_RESOURCES + "weather.jpg";
-	private static final String VIEW_RESPATH_WEATHER = VIEW_RESOURCES + "weather.html";
-	private static final String VIEW_TEMPLATE_WEATHERDATA = VIEW_RESOURCES + "current-weather.json";
-	private static final String VIEW_WEBPATH_WEATHERDATA = "current-weather.json";
-
-	private static final String VIEW_ID_LNDW = "LNDWView";
-	private static final String ICON_RESPATH_LNDW = VIEW_RESOURCES + "lndw.png";
-	private static final String VIEW_RESPATH_LNDW = VIEW_RESOURCES + "lndw.html";
-
 	private static final String STORAGE_KEY_USERNAME = "uname";
 
 	private static final List<Quote> quotes = new ArrayList<>();
 	private Quote quoteOfTheDay = null;
-
-	@Nonnull
-	private WeatherStationState weatherStationState = new WeatherStationNotConfigured();
 
 	private ScheduledFuture<?> quoteUpdateThread = null;
 	private ViewRegistrator viewRegistrator;
@@ -300,11 +191,7 @@ public class MirrorExampleApp extends AbstractIOLITEApp {
 		}
 
 		final ResourcePackageConfig staticResourceConfig = new ResourcePackageConfig(VIEW_RESOURCES);
-		staticResourceConfig.addView(VIEW_ID_CLOCK, VIEW_RESPATH_CLOCK, ICON_RESPATH_CLOCK);
-		staticResourceConfig.addView(VIEW_ID_HELLO_WORLD, VIEW_RESPATH_HELLO_WORLD, ICON_RESPATH_HELLO_WORLD);
-		staticResourceConfig.addView(VIEW_ID_LNDW, VIEW_RESPATH_LNDW, ICON_RESPATH_LNDW);
-		staticResourceConfig.addView(VIEW_ID_WELCOME, VIEW_RESPATH_WELCOME, ICON_RESPATH_WELCOME);
-		staticResourceConfig.addView(VIEW_ID_WEATHER, VIEW_RESPATH_WEATHER, ICON_RESPATH_WEATHER);
+
 		staticResourceConfig.addView(VIEW_ID_QUOTE, null, ICON_RESPATH_QUOTE);
 		this.viewRegistrator = new ViewRegistrator(staticResourceConfig, APP_ID, userId);
 		final DeviceAPIObserver deviceObserver = new DeviceAPIObserver() {
