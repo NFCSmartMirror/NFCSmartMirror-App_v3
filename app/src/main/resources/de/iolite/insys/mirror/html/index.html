@@ -1,0 +1,59 @@
+<html>
+<head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+		  integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+</head>
+<body>
+<form action="javascript:;" onsubmit="return saveUserName(this);" class="form-inline">
+	<div class="form-group">
+		<label for="name">Name</label>
+		<input type="text" class="form-control" id="name" name="name">
+	</div>
+	<button type="submit" class="btn btn-default">Save</button>
+</form>
+<img src="smart-mirror.svg" \>
+
+<script type="text/javascript" src="./js/jquery-2.2.1.min.js"></script>
+<script type="text/javascript" src="/bus/ModelAPICommunicationObject.js"></script>
+<script type="text/javascript" src="/bus/ModelAPI.js"></script>
+<script type="text/javascript" src="/bus/ModelAPIWebsocketClientFactory.js"></script>
+<script type="text/javascript" src="/bus/bus-client-bootstrap.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- <script src="js/bootstrap.min.js"></script> -->
+<!-- Custom JavaScript -->
+<script src="js/userName.js"></script>
+
+
+<script type="text/javascript">
+    function getParameterByName(name) {
+      name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+      var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+      return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+
+	switch(window.location.protocol) {
+	   case 'file:':
+		 initInDebugMode();
+		 break;
+	   case 'http:':
+	   case 'https:':
+	   default:
+		var sid = getParameterByName("SID");
+		window["Client"] = {
+		  SID: sid, // set session token if required to be embedded rather than set via URL!
+		  throwErrorOnBootFailure: true,
+		  readyCallback: function() {
+			loadUserName();
+		  },
+		  failureCallback: function() {
+			// Do something when client initialization fails
+		  }
+		};
+	}
+
+</script>
+
+</body>
+</html>

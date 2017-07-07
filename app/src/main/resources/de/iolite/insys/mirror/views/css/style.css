@@ -1,0 +1,95 @@
+@font-face {
+  font-family: "Montserrat-Light";
+  src: url(https://cdn.rawgit.com/google/fonts/master/ofl/montserrat/Montserrat-Light.ttf) format("truetype");
+}
+body {
+    background: #000000 none repeat scroll 0 0;
+    color: white;
+    font-family: "Montserrat-Light", sans-serif;
+    font-size: 28px;
+    font-weight: bold;
+    margin: 0;
+    overflow: hidden;
+}
+
+.blizzard-animation {
+	background-image: url('../images/animated-lightning.gif');	
+}
+
+#content {
+  display: block;
+  padding: 0px;
+  position: relative;
+  font-size: 60px;
+}
+
+.centered-text {
+  text-align: center;
+}
+
+#weather-content {
+	display:flex
+}
+
+.main-weather-data {
+	position: relative;
+	font-size: 24px;
+	text-align: left;
+	padding-top: 20px;
+	padding-left: 20px;
+	line-height: 40px;
+}
+
+.sunrise-sunset {
+	font-size: 24px;
+}
+
+.sunrise-sunset span:last-child {
+	float: left;
+}
+
+.sunrise-sunset span:first-child {
+	float: right;
+}
+
+.info{
+	font-size: 30px;
+}
+
+.quote-size{
+	font-size: 30px;
+}
+
+.center {
+  margin: 0 auto;
+}
+
+.upper-left {
+  position: absolute !important;
+  margin: 0 auto !important;
+  top: 0;
+  left: 0;
+}
+.upper-right {
+  position: absolute !important;
+  margin: 0 auto !important;
+  top: 0;
+  right: 0;
+}
+.bottom-left {
+  position: absolute !important;
+  bottom: 0;
+  left: 0;
+}
+.bottom-right {
+  position: absolute !important;
+  bottom: 0;
+  right: 0;
+}
+
+.clear {
+  clear: both;
+  height: 1px;
+  font-size: 1px;
+  line-height: 1px;
+}

@@ -1,0 +1,21 @@
+{
+  "lastUpdate": 1490284568414,
+  "temperature": 7.5,
+  "humidity": 81.0,
+  "cloudiness": 75,
+  "windDirection": "N",
+  "windSpeed": 2.454,
+  "extremeWeather": false,
+  "extremeWeatherMessage": null,
+  "thunderStorm": false,
+  "fog": false,
+  "rainfallDetected": null,
+  "rainIntensity": "None",
+  "snowIntensity": "None",
+  "sunriseTimestamp": 1490245210000,
+  "sunsetTimestamp": 1490289972000,
+  "timeOfDay": "Day",
+  "airPressure": 1020.0,
+  "illuminance": null,
+  "moonPhase": null
+}

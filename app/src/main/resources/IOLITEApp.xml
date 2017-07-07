@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:iolite-app-configuration
+		xmlns:ns2="www.iolite.de/iolite-app-configuration"
+		name="Mirror Example App"
+		className="de.iolite.insys.mirror.MirrorExampleApp">
+
+	<api-permission name="de.iolite.app.api.frontend.FrontendAPI" type="READ_WRITE"/>
+	<api-permission name="de.iolite.app.api.user.access.UserAPI" type="READ"/>
+	<api-permission name="de.iolite.app.api.device.access.DeviceAPI" type="READ_WRITE"/>
+	<api-permission name="de.iolite.app.api.storage.StorageAPI" type="READ_WRITE"/>
+
+	<!--<device-property-permission name="http://iolite.de#mirrorApiUrl" type="READ"/>-->
+
+	<icon-url>de/iolite/insys/mirror/html/smart-mirror.svg</icon-url>
+
+	<preferred-width>0</preferred-width>
+	<preferred-height>0</preferred-height>
+
+</ns2:iolite-app-configuration>

@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+		"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+	<!-- Bootstrap Core CSS -->
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<script type="text/javascript" src="./libs/angular.min.js"></script>
+</head>
+
+<body ng-app="weatherApp" ng-controller="weatherCtrl" ng-class="{ 'blizzard-animation': weather.current.thunderStorm }">
+<div id="content">
+	<div class="centered-text" ng-show="!weather.current">
+		No Weatherstation found!
+	</div>
+	<div id="weather-content" ng-show="weather.current">
+			<span>
+				<div>
+				  <figure>
+					<canvas id="clear-day" ng-show="weather.current.statusIcon == 'clear-day'" width="200" height="200">
+					</canvas>
+					<canvas id="clear-night" ng-show="weather.current.statusIcon == 'clear-night'" width="200" height="200">
+					</canvas>
+					<canvas id="partly-cloudy-day" ng-show="weather.current.statusIcon == 'partly-cloudy-day'" width="200" height="200">
+					</canvas>
+					<canvas id="partly-cloudy-night" ng-show="weather.current.statusIcon == 'partly-cloudy-night'" width="200" height="200">
+					</canvas>
+					<canvas id="cloudy" ng-show="weather.current.statusIcon == 'cloudy'" width="200" height="200">
+					</canvas>
+					<canvas id="rain" ng-show="weather.current.statusIcon == 'rain'" width="200" height="200">
+					</canvas>
+					<canvas id="sleet" ng-show="weather.current.statusIcon == 'sleet'" width="200" height="200">
+					</canvas>
+					<canvas id="snow" ng-show="weather.current.statusIcon == 'snow'" width="200" height="200">
+					</canvas>
+					<canvas id="wind" ng-show="weather.current.statusIcon == 'wind'" width="200" height="200">
+					</canvas>
+					<canvas id="fog" ng-show="weather.current.statusIcon == 'fog'" width="200" height="200">
+					</canvas>
+				  </figure>
+				</div>
+				<div class="sunrise-sunset">
+					<span ng-if="weather.current.sunriseTimestamp"><img src="./images/Sunrise-26.png"> {{weather.current.sunriseReadable}}</span>
+					<span ng-if="weather.current.sunsetTimestamp"><img src="./images/Sunset-26.png"> {{weather.current.sunsetReadable}}</span>
+				</div>
+			</span>
+		<span class="main-weather-data">
+				<span ng-if="weather.current.temperature">{{weather.current.temperature}}°C</span><br/>
+				<span ng-if="weather.current.humidity">{{weather.current.humidity}}%</span><br/>
+				<span ng-if="weather.current.airPressure">{{weather.current.airPressure}}hPa</span><br/>
+				<span ng-if="weather.current.windSpeed">{{weather.current.windSpeed}}m/s</span>
+			</span>
+	</div>
+</div>
+
+<script src="./js/skycons.js"></script>
+<script>
+      var icons = new Skycons({"color": "white"}),
+          list  = [
+            "clear-day", "clear-night", "partly-cloudy-day",
+            "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
+            "fog"
+          ],
+          i;
+
+      for(i = list.length; i--; )
+        icons.set(list[i], list[i]);
+
+      icons.play();
+
+		function update() {
+			var d = new Date();
+			if(d.getHours() >= 21 || d.getHours() < 5 ){
+				document.getElementById("partly-cloudy-day").style.display = "none";
+				document.getElementById("partly-cloudy-night").style.display = "block";
+			}
+			else {
+				document.getElementById("partly-cloudy-night").style.display = "none";
+				document.getElementById("partly-cloudy-day").style.display = "block";
+			}
+		}
+		setInterval(update, 600000);
+		update();
+
+
+</script>
+
+<script type="text/javascript" src="./js/jquery-2.2.1.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- <script src="js/bootstrap.min.js"></script> -->
+<!-- Custom JavaScript -->
+<script src="js/alignment.js"></script>
+<script type="text/javascript" src="./js/weather-app.js"></script>
+
+</body>
+
+</html>
