@@ -25,6 +25,14 @@ public class NotificationService extends NotificationListenerService {
         context = getApplicationContext();
 
     }
+
+    public void onListenerConnected(){
+
+        String notifications = String.valueOf(getActiveNotifications().clone());
+        Log.i("bla", notifications);
+
+    }
+
     @Override
 
     public void onNotificationPosted(StatusBarNotification sbn) {

@@ -8,6 +8,8 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.NFC"/>
     <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -39,21 +41,14 @@
 
         </service>
 
-        <service android:name=".MyAccessibilityService">
-            <intent-filter>
-                <action android:name="android.accessibilityservice.AccessibilityService" />
-            </intent-filter>
-            . . .
-        </service>
 
-
-        <receiver android:name="com.mirror.nfc.nfcsmartmirror_app_v3.IncomingSms">
+        <receiver android:name="com.mirror.nfc.nfcsmartmirror_app_v3.SMSListener">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
 
-        <receiver android:name="com.mirror.nfc.nfcsmartmirror_app_v3.ServiceReceiver" >
+        <receiver android:name="com.mirror.nfc.nfcsmartmirror_app_v3.CallListener" >
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>

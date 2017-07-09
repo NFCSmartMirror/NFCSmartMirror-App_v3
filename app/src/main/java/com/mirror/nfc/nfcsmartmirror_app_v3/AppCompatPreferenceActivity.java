@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
+ * Defining layout of the Mirror Connect App...
  * A {@link android.preference.PreferenceActivity} which implements and proxies the necessary calls
  * to be used with AppCompat.
  */
