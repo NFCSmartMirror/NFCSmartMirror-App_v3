@@ -13,7 +13,7 @@ import android.widget.Toast;
  */
 
 
-public class CallReceiver extends BroadcastReceiver {
+public class CallListener extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, Intent intent) {

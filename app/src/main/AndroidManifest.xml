@@ -48,7 +48,7 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name="com.mirror.nfc.nfcsmartmirror_app_v3.CallReceiver" >
+        <receiver android:name="com.mirror.nfc.nfcsmartmirror_app_v3.CallListener" >
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
