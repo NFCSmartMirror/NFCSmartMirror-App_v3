@@ -9,11 +9,13 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import org.apache.commons.io.FileUtils;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 /**
  * retrieves incoming SMS. These are logged together with the phone number of the message's sender.
@@ -58,47 +60,37 @@ public class SMSListener extends BroadcastReceiver {
 
                     LocalBroadcastManager.getInstance(context).sendBroadcast(msgIntent);
 
-                    //////////////////////////////////////////////////
-                    // Ab hier neuer HTML erstellugscode
-                    //////////////////////////////////////////////////
+
+
+
+                    //Write SMS html file here
+                    //File htmlTemplateFile = new File("../res/templates/templateSMS.html");
+                    //htmlTemplateFile.createNewFile();
+                    File htmlTemplateFile = new File(context.getFilesDir(), "smsTest.html");
+                    htmlTemplateFile.createNewFile();
+                    String htmlString = FileUtils.readFileToString(htmlTemplateFile);
+                    String number = phoneNumber;
+                    String SMSmessage = message;
+                    htmlString = htmlString.replace("$Number", number);
+                    htmlString = htmlString.replace("$Message", SMSmessage);
+                    File SMSfile = new File("data/data/SMSMessageChanged.html");
+
+                    FileUtils.writeStringToFile(htmlTemplateFile, htmlString);
+
+
+                    FileOutputStream fOut = context.openFileOutput("smsTest.html",Context.MODE_WORLD_READABLE);
+                    OutputStreamWriter osw = new OutputStreamWriter(fOut);
+
+                    // Write the string to the file
+                    osw.write(message);
+
+       /* ensure that everything is
+        * really written out and close */
+                    osw.flush();
+                    osw.close();
 
                     FileInputStream fIn = context.openFileInput("smsTest.html");
                     InputStreamReader isr = new InputStreamReader(fIn);
-
-                    String htmlString = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"\n" +
-                            "\"http://www.w3.org/TR/html4/loose.dtd\">\n" +
-                            "\n" +
-                            "<html>\n" +
-                            "\n" +
-                            "<head>\n" +
-                            "\t<meta charset=\"utf-8\">\n" +
-                            "\t<!-- Bootstrap Core CSS -->\n" +
-                            " <link rel=\"stylesheet\" href=\"css/bootstrap.min.css\">\n" +
-                            " <link rel=\"stylesheet\" type=\"text/css\" href=\"css/style.css\">\n" +
-                            "</head>\n" +
-                            "\n" +
-                            "<body>\n" +
-                            "\n" +
-                            " <div id=\"content\" class=\"centered-text\">\n" +
-                            "\t\t<div class=\"quote\">\n" +
-                            "\t\t\t<blockquote class=\"quote-size\">\n" +
-                            "\t\t\t\t<p>" + message +"</p>\n" +
-                            "\t\t\t\t<footer><cite title=\"Source Title\">"+ phoneNumber + "</cite></footer>\n" +
-                            "\t\t\t</blockquote>\n" +
-                            "\t\t</div>\n" +
-                            "\t</div>\n" +
-                            "\n" +
-                            "\n" +
-                            " <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js\"></script>\n" +
-                            " <!-- Bootstrap Core JavaScript -->\n" +
-                            " <script src=\"js/bootstrap.min.js\"></script>\n" +
-                            " <!-- Custom JavaScript -->\n" +
-                            " <script src=\"js/alignment.js\"></script>\n" +
-                            "</body>\n" +
-                            "\n" +
-                            "</html>\n";
-
-                    Log.i("HTML",htmlString);
 
         /* Prepare a char-Array that will
          * hold the chars we read back in. */
@@ -119,36 +111,9 @@ public class SMSListener extends BroadcastReceiver {
                 } // end for loop
             } // bundle is null
 
-
-            //Besandteile des "Pachages"  für den Upload definieren
-            // MirrorExampleApp Zeile 174
-            final String VIEW_ID_QUOTE = "QuoteView";
-            final String ICON_RESPATH_QUOTE =  "app\\src\\main\\resources\\de\\iolite\\insys\\mirror\\views\\quote.png";
-            final String VIEW_WEBPATH_QUOTE = "htmlString";
-
-
-            // View testen
-            public void addView (final String viewId, final String mainPageResource, final String iconResource) {
-                if (viewId == null) {
-                    throw new IllegalArgumentException("Parameter 'viewId' mustn't be null!");
-                }
-                if (mainPageResource != null) {
-                    this.mainPages.put(mainPageResource, viewId);
-                }
-                if (iconResource != null) {
-                    this.icons.put(iconResource, viewId);
-                }
-            }
-            // MirrorExampleApp Zeile 309
-            addView(VIEW_ID_QUOTE, null, ICON_RESPATH_QUOTE);
-            // MirrorExampleApp Zeile 310
-            this.viewRegistrator = new ViewRegistrator(staticResourceConfig, APP_ID, userId);
-
         } catch (Exception e) {
             Log.e("SmsReceiver", "Exception smsReceiver" +e);
 
         }
     }
-
-
 }
