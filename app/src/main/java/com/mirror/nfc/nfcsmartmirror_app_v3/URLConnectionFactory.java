@@ -9,6 +9,9 @@ package com.mirror.nfc.nfcsmartmirror_app_v3;
  * Created by: lehmann
  */
 
+        import android.annotation.TargetApi;
+        import android.os.Build;
+
         import java.io.IOException;
         import java.io.UnsupportedEncodingException;
         import java.net.HttpURLConnection;
@@ -27,6 +30,7 @@ package com.mirror.nfc.nfcsmartmirror_app_v3;
  */
 public final class URLConnectionFactory implements UploadConnectionFactory {
 
+    @TargetApi(Build.VERSION_CODES.N)
     public static class Builder {
 
 

@@ -1,14 +1,14 @@
 package com.mirror.nfc.nfcsmartmirror_app_v3;
 
-        import java.io.BufferedReader;
-        import java.io.ByteArrayInputStream;
-        import java.io.File;
-        import java.io.IOException;
-        import java.io.InputStream;
-        import java.io.InputStreamReader;
-        import java.io.OutputStream;
-        import java.net.HttpURLConnection;
-        import java.net.MalformedURLException;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 
 //import java.nio.file.Path;
 //import java.nio.file.Paths;
@@ -100,6 +100,12 @@ public class StaticResourceUploader {
 
 
     private final ClassLoader classLoader;
+
+    public ClassLoader getClassLoader() {
+        return classLoader;
+    }
+
+
 
 
     private final URLConnectionFactory.Builder builder = new URLConnectionFactory.Builder();
@@ -302,6 +308,7 @@ public class StaticResourceUploader {
 
     public String uploadResource( final String resource,  final String urlBasePath)
             throws IOException {
+
         if (resource == null) {
             throw new IllegalArgumentException("'resource' mustn't be null!");
         }
@@ -311,7 +318,4 @@ public class StaticResourceUploader {
         return uploadResource(() -> this.classLoader.getResourceAsStream(resource), urlBasePath);
     }
 
-
-
 }
-

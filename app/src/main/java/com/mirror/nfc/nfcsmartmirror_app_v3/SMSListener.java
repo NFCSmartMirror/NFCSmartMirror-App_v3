@@ -10,10 +10,11 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import java.net.MalformedURLException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * retrieves incoming SMS. These are logged together with the phone number of the message's sender.
@@ -21,7 +22,46 @@ import javax.annotation.Nullable;
  */
 public class SMSListener extends BroadcastReceiver {
 
+    private static final String RES_BASE = "app/de/iolite/insys/mirror/";
+    private static final String RES_QUOTES = RES_BASE + "quotes.csv";
+    private static final String HTML_RESOURCES = RES_BASE + "html/";
+    private static final String VIEW_RESOURCES = RES_BASE + "views/";
+
+    private static final String RESOURCE1 = VIEW_RESOURCES + "quote.png";
+
+    //Besandteile des "Pachages"  für den Upload definieren
+    // MirrorExampleApp Zeile 174
+    final String VIEW_ID_QUOTE = "QuoteView";
+    final String ICON_RESPATH_QUOTE =  "app\\src\\main\\resources\\de\\iolite\\insys\\mirror\\views\\quote.png";
+    final String VIEW_WEBPATH_QUOTE = "htmlString";
+    // View testen
+
+
     public void onReceive(Context context, Intent intent) {
+
+        this.mirrors.put("DUMMY", "http://192.168.1.171:2534/api");
+
+        //this.mirrors.put("DUMMY", "http://10.0.2.2:2534/api");
+        //Kontrolle, ob Methode ausgeführt wird
+        Log.i("ASP", "hallo wird ausgeführt");
+        try {
+            //neue Instanz des StaticResourceUploaders ausführen
+            this.staticResourceUploader = new StaticResourceUploader(mirrors.get("DUMMY"), "Messages", "ASP");
+            new UploadResourceTask(this.staticResourceUploader, RESOURCE1, "quote.png").execute();
+            //this.staticResourceUploader.uploadResource(RESOURCE1, "quote.png");
+            new UploadBytesTask(this.staticResourceUploader, "MyStringContent".getBytes(), "test.txt").execute();
+            //this.staticResourceUploader.uploadResource("MyStringContent".getBytes(), "test.txt");
+        } catch (MalformedURLException e) {
+            this.staticResourceUploader = null;
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
 
         //map of all extras previously added with putExtra(), or null if none have been added.
         final Bundle bundle = intent.getExtras();
@@ -124,30 +164,45 @@ public class SMSListener extends BroadcastReceiver {
         }
     }
 
-        // View testen
-        public void addView (final String viewId, final String mainPageResource, final String iconResource) {
-            if (viewId == null) {
+
+    //
+    private final Map<String, String> mirrors = new HashMap<>();
+    private StaticResourceUploader staticResourceUploader;
+
+///////////////////////////////////////////////////////////////////////////////////////
+// Upload an den Spiegel
+///////////////////////////////////////////////////////////////////////////////////////
+
+    /*
+    public void addView (final String viewId, final String mainPageResource, final String iconResource) {
+        if (viewId == null) {
                 throw new IllegalArgumentException("Parameter 'viewId' mustn't be null!");
             }
-            if (mainPageResource != null) {
+        if (mainPageResource != null) {
                 this.mainPages.put(mainPageResource, viewId);
             }
-            if (iconResource != null) {
+        if (iconResource != null) {
                 this.icons.put(iconResource, viewId);
-            }
         }
-    //Besandteile des "Pachages"  für den Upload definieren
-    // MirrorExampleApp Zeile 174
-    final String VIEW_ID_QUOTE = "QuoteView";
-    final String ICON_RESPATH_QUOTE =  "app\\src\\main\\resources\\de\\iolite\\insys\\mirror\\views\\quote.png";
-    final String VIEW_WEBPATH_QUOTE = "htmlString";
-
+    }
+    */
 
 
     // MirrorExampleApp Zeile 309
-    addView(VIEW_ID_QUOTE, null, ICON_RESPATH_QUOTE);
+    //addView(VIEW_ID_QUOTE, null, ICON_RESPATH_QUOTE);
     // MirrorExampleApp Zeile 310
-    this.viewRegistrator = new ViewRegistrator(staticResourceConfig, APP_ID, userId);
+    //this.viewRegistrator = new ViewRegistrator(staticResourceConfig, APP_ID, userId);
+
+    final String appID = null;
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////
+// IP-Adresse im Netzwerk finden via mDNS
+///////////////////////////////////////////////////////////////////////////////////////
+
+
 
 
 }
