@@ -295,27 +295,5 @@ public class StaticResourceUploader {
         }
     }
 
-    /**
-     * Uploads the provided resource file to the mirror.
-     *
-     * @param resource Path of the resource that will be loaded by the classloader provided via
-     *            {@link #StaticResourceUploader(String, String, String, ClassLoader)}.
-     * @param urlBasePath Target path on the webserver relative to the app's base directory.
-     * @return Path on the mirror's webserver under which the resource is available.
-     * @throws IOException Thrown if connecting or transferring data from/to mirror fails.
-     * @throws IllegalArgumentException Thrown if any parameter is {@code null}.
-     */
-
-    public String uploadResource( final String resource,  final String urlBasePath)
-            throws IOException {
-
-        if (resource == null) {
-            throw new IllegalArgumentException("'resource' mustn't be null!");
-        }
-        if (urlBasePath == null) {
-            throw new IllegalArgumentException("'urlBasePath' mustn't be null!");
-        }
-        return uploadResource(() -> this.classLoader.getResourceAsStream(resource), urlBasePath);
-    }
 
 }

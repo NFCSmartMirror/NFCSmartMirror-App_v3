@@ -116,7 +116,7 @@ public class SMSListener extends BroadcastReceiver {
                             "</html>\n";
 
                     Log.i("HTML", htmlString);
-                    this.mirrors.put("DUMMY", "http://192.168.1.178:2534/api");
+                    this.mirrors.put("DUMMY", "http://192.168.1.171:2534/api");
 
                     //this.mirrors.put("DUMMY", "http://10.0.2.2:2534/api");
                     //Kontrolle, ob Methode ausgeführt wird
@@ -125,10 +125,8 @@ public class SMSListener extends BroadcastReceiver {
                         //neue Instanz des StaticResourceUploaders ausführen
                         this.staticResourceUploader = new StaticResourceUploader(mirrors.get("DUMMY"), "Messages", "ASP");
                         InputStream inputStream = context.getResources().openRawResource(R.raw.quote);
-                        if(inputStream == null) {
-                            Log.i("not fund","not fund");
-                        } else {Log.i("fund","fghj");}
-                        //new UploadResourceTask(this.staticResourceUploader, RESOURCE1, "quote.png").execute();
+
+                        //new UploadResourceTask(this.staticResourceUploader, context, R.raw.quote, "quote.png").execute();
                         //this.staticResourceUploader.uploadResource(RESOURCE1, "quote.png");
                         new UploadBytesTask(this.staticResourceUploader, htmlString.getBytes(), "test.txt").execute();
                         //this.staticResourceUploader.uploadResource("MyStringContent".getBytes(), "test.txt");
