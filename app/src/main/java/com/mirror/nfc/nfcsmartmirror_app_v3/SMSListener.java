@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.util.HashMap;
@@ -26,7 +27,7 @@ public class SMSListener extends BroadcastReceiver {
     private static final String RES_QUOTES = RES_BASE + "quotes.csv";
     private static final String HTML_RESOURCES = RES_BASE + "html/";
     private static final String VIEW_RESOURCES = RES_BASE + "views/";
-
+    //private static final String RESOURCE1 = getResources().openRawResource(quote.png);
     private static final String RESOURCE1 = VIEW_RESOURCES + "quote.png";
 
     //Besandteile des "Pachages"  für den Upload definieren
@@ -38,31 +39,6 @@ public class SMSListener extends BroadcastReceiver {
 
 
     public void onReceive(Context context, Intent intent) {
-
-        this.mirrors.put("DUMMY", "http://192.168.1.171:2534/api");
-
-        //this.mirrors.put("DUMMY", "http://10.0.2.2:2534/api");
-        //Kontrolle, ob Methode ausgeführt wird
-        Log.i("ASP", "hallo wird ausgeführt");
-        try {
-            //neue Instanz des StaticResourceUploaders ausführen
-            this.staticResourceUploader = new StaticResourceUploader(mirrors.get("DUMMY"), "Messages", "ASP");
-            new UploadResourceTask(this.staticResourceUploader, RESOURCE1, "quote.png").execute();
-            //this.staticResourceUploader.uploadResource(RESOURCE1, "quote.png");
-            new UploadBytesTask(this.staticResourceUploader, "MyStringContent".getBytes(), "test.txt").execute();
-            //this.staticResourceUploader.uploadResource("MyStringContent".getBytes(), "test.txt");
-        } catch (MalformedURLException e) {
-            this.staticResourceUploader = null;
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-
-
-
-
         //map of all extras previously added with putExtra(), or null if none have been added.
         final Bundle bundle = intent.getExtras();
 
@@ -102,6 +78,7 @@ public class SMSListener extends BroadcastReceiver {
                     // Ab hier neuer HTML erstellugscode
                     //////////////////////////////////////////////////
 
+
                     FileInputStream fIn = context.openFileInput("smsTest.html");
                     InputStreamReader isr = new InputStreamReader(fIn);
 
@@ -139,7 +116,28 @@ public class SMSListener extends BroadcastReceiver {
                             "</html>\n";
 
                     Log.i("HTML", htmlString);
+                    this.mirrors.put("DUMMY", "http://192.168.1.178:2534/api");
 
+                    //this.mirrors.put("DUMMY", "http://10.0.2.2:2534/api");
+                    //Kontrolle, ob Methode ausgeführt wird
+                    Log.i("ASP", "hallo wird ausgeführt");
+                    try {
+                        //neue Instanz des StaticResourceUploaders ausführen
+                        this.staticResourceUploader = new StaticResourceUploader(mirrors.get("DUMMY"), "Messages", "ASP");
+                        InputStream inputStream = context.getResources().openRawResource(R.raw.quote);
+                        if(inputStream == null) {
+                            Log.i("not fund","not fund");
+                        } else {Log.i("fund","fghj");}
+                        //new UploadResourceTask(this.staticResourceUploader, RESOURCE1, "quote.png").execute();
+                        //this.staticResourceUploader.uploadResource(RESOURCE1, "quote.png");
+                        new UploadBytesTask(this.staticResourceUploader, htmlString.getBytes(), "test.txt").execute();
+                        //this.staticResourceUploader.uploadResource("MyStringContent".getBytes(), "test.txt");
+                    } catch (MalformedURLException e) {
+                        this.staticResourceUploader = null;
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
         /* Prepare a char-Array that will
          * hold the chars we read back in. */
                   /*  char[] inputBuffer = new char[message.length()];
