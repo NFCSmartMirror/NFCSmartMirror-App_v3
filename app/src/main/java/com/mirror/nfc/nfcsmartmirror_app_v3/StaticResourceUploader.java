@@ -1,5 +1,7 @@
 package com.mirror.nfc.nfcsmartmirror_app_v3;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -147,6 +149,7 @@ public class StaticResourceUploader {
             throw new IllegalArgumentException("'userId' mustn't be null!");
         }
         if (classLoader == null) {
+            Log.i("Error","Error in classLoader");
             throw new IllegalArgumentException("'classLoader' mustn't be null!");
         }
         this.builder.setAppId(appId);

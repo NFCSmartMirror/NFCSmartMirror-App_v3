@@ -18,6 +18,7 @@ public class UploadBytesTask extends AsyncTask<Void, Void, String> {
         this.bytes = bytes;
         this.urlBasePath = urlBasePath;
         this.resourceUploader = uploader;
+
     }
 
     @Override

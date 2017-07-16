@@ -9,10 +9,7 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -79,8 +76,8 @@ public class SMSListener extends BroadcastReceiver {
                     //////////////////////////////////////////////////
 
 
-                    FileInputStream fIn = context.openFileInput("smsTest.html");
-                    InputStreamReader isr = new InputStreamReader(fIn);
+                    //FileInputStream fIn = context.openFileInput("smsTest.html");
+                    //InputStreamReader isr = new InputStreamReader(fIn);
 
                     String htmlString = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"\n" +
                             "\"http://www.w3.org/TR/html4/loose.dtd\">\n" +
@@ -116,19 +113,19 @@ public class SMSListener extends BroadcastReceiver {
                             "</html>\n";
 
                     Log.i("HTML", htmlString);
-                    this.mirrors.put("DUMMY", "http://192.168.1.171:2534/api");
-
+                    this.mirrors.put("DUMMY", "http://192.168.178.109:2534/api");
                     //this.mirrors.put("DUMMY", "http://10.0.2.2:2534/api");
+
                     //Kontrolle, ob Methode ausgeführt wird
                     Log.i("ASP", "hallo wird ausgeführt");
                     try {
                         //neue Instanz des StaticResourceUploaders ausführen
-                        this.staticResourceUploader = new StaticResourceUploader(mirrors.get("DUMMY"), "Messages", "ASP");
-                        InputStream inputStream = context.getResources().openRawResource(R.raw.quote);
-
-                        //new UploadResourceTask(this.staticResourceUploader, context, R.raw.quote, "quote.png").execute();
+                        this.staticResourceUploader = new StaticResourceUploader(mirrors.get("DUMMY"), "Messages", "ASP1");
+                        //InputStream inputStream = context.getResources().openRawResource(R.raw.quote);
+                        //new UploadResourceTask(this.staticResourceUploader, RESOURCE1, "quote.png").execute();
+                        new UploadResourceTask(this.staticResourceUploader, context, R.raw.quote, "quote.png").execute();
                         //this.staticResourceUploader.uploadResource(RESOURCE1, "quote.png");
-                        new UploadBytesTask(this.staticResourceUploader, htmlString.getBytes(), "test.txt").execute();
+                        new UploadBytesTask(this.staticResourceUploader, "blavblauhruhfufh".getBytes(), "test1.txt").execute();
                         //this.staticResourceUploader.uploadResource("MyStringContent".getBytes(), "test.txt");
                     } catch (MalformedURLException e) {
                         this.staticResourceUploader = null;
