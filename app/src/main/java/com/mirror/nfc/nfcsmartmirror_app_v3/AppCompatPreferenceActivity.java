@@ -1,9 +1,11 @@
 package com.mirror.nfc.nfcsmartmirror_app_v3;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.nsd.NsdManager;
 import android.net.nsd.NsdServiceInfo;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.support.annotation.LayoutRes;
@@ -15,8 +17,10 @@ import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import java.net.Inet6Address;
+import java.net.Inet4Address;
 import java.net.InetAddress;
 
 /**
@@ -27,6 +31,11 @@ import java.net.InetAddress;
 public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
 
     private AppCompatDelegate mDelegate;
+    //NFC
+    private TextView mTextView;
+    private NfcAdapter mNfcAdapter;
+    //
+
     //Here starts a part of the NetworkServiceDiscovery
 
     NsdManager.DiscoveryListener mDiscoveryListener;
@@ -38,6 +47,7 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
     public static final String TAG = "NsdService";
     public String SmartMirrorSR = "Smart Mirror";
     public String SmartMirrorHD = "SmartMirrorHD";
+    public String mirrorIPRU;
 
     private NsdManager mNsdManager;
 
@@ -100,12 +110,37 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
         getDelegate().onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
 
+
+
+        //NFC
+        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+
+        if(mNfcAdapter == null){
+            Toast.makeText(this, " this device doesnt support NFC", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+        if(!mNfcAdapter.isEnabled()){
+            mTextView.setText ("NFC is disabled");
+        }else{ // mTextView.setText (R.string.explanation);
+        }
+        handleIntent (getIntent());
+    }
+
+
+    private void handleIntent(Intent intent) {
+       // Toast.makeText(this, "THIS IS WHERE THE MAGIC HAPPENS", Toast.LENGTH_SHORT).show();
+        //Method for connecting the mirror
         //NetworkServiceDiscovery nsd = new NetworkServiceDiscovery(this);
         this.mNsdManager = (NsdManager) getSystemService(Context.NSD_SERVICE);
         initializeDiscoveryListener();
         mNsdManager.discoverServices(
                 SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, mDiscoveryListener);
-
+        String action = intent.getAction();
+        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
+            String type = intent.getType();
+            Toast.makeText(this, "jetzt startet der bums ", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public NsdManager.ResolveListener initializeResolveListener() {
@@ -140,13 +175,17 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
                     return;
                 }
                 //Creation of ipv6 address of mirror
-                if (host instanceof Inet6Address){
-                    String inetAdressv6Mirror = "http://[" +mirrorIP+ "]"+":"+mirrorPort +"/api";
-                    Log.i("NSD_InetAddressV6Mirror",inetAdressv6Mirror);
+                if (host instanceof Inet4Address){
+                    String inetAdressv4Mirror = "http://" +mirrorIP+":"+mirrorPort +"/api";
+                    Log.i("NSD_InetAddressV4Mirror",inetAdressv4Mirror);
+                    mirrorIPRU = inetAdressv4Mirror;
+                    Toast.makeText(getApplicationContext(),"Saved in String!",Toast.LENGTH_SHORT).show();
+
                 }else{
                     //Creation of ipv6 address of mirror
-                    String inetAdressv4Mirror = "http://"+mirrorIP +":"+mirrorPort +"/api";
-                    Log.i("NSD_InetAddressV4Mirror", inetAdressv4Mirror);
+                    String inetAdressv6Mirror = "http://["+mirrorIP +"]:"+mirrorPort +"/api";
+                    Log.i("NSD_InetAddressV6Mirror", inetAdressv6Mirror);
+                    Toast.makeText(getApplicationContext(),"NSD next try please!",Toast.LENGTH_SHORT).show();
                 }
                 Log.i("Host", host.getHostAddress());
             }

@@ -54,7 +54,6 @@ public class SMSListener extends BroadcastReceiver {
                     msgIntent.putExtra("title", phoneNumber);
                     msgIntent.putExtra("text", message);
 
-
                     LocalBroadcastManager.getInstance(context).sendBroadcast(msgIntent);
 
                     //////////////////////////////////////////////////
