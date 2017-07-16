@@ -20,20 +20,6 @@ import java.util.Map;
  */
 public class SMSListener extends BroadcastReceiver {
 
-    private static final String RES_BASE = "app/de/iolite/insys/mirror/";
-    private static final String RES_QUOTES = RES_BASE + "quotes.csv";
-    private static final String HTML_RESOURCES = RES_BASE + "html/";
-    private static final String VIEW_RESOURCES = RES_BASE + "views/";
-    //private static final String RESOURCE1 = getResources().openRawResource(quote.png);
-    private static final String RESOURCE1 = VIEW_RESOURCES + "quote.png";
-
-    //Besandteile des "Pachages"  für den Upload definieren
-    // MirrorExampleApp Zeile 174
-    final String VIEW_ID_QUOTE = "QuoteView";
-    final String ICON_RESPATH_QUOTE =  "app\\src\\main\\resources\\de\\iolite\\insys\\mirror\\views\\quote.png";
-    final String VIEW_WEBPATH_QUOTE = "htmlString";
-    // View testen
-
 
     public void onReceive(Context context, Intent intent) {
         //map of all extras previously added with putExtra(), or null if none have been added.
@@ -75,11 +61,7 @@ public class SMSListener extends BroadcastReceiver {
                     // Ab hier neuer HTML erstellugscode
                     //////////////////////////////////////////////////
 
-
-                    //FileInputStream fIn = context.openFileInput("smsTest.html");
-                    //InputStreamReader isr = new InputStreamReader(fIn);
-
-                    String htmlString = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"\n" +
+                   String htmlString = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"\n" +
                             "\"http://www.w3.org/TR/html4/loose.dtd\">\n" +
                             "\n" +
                             "<html>\n" +
@@ -153,8 +135,7 @@ public class SMSListener extends BroadcastReceiver {
         }
     }
 
-
-    //
+    // Hash
     private final Map<String, String> mirrors = new HashMap<>();
     private StaticResourceUploader staticResourceUploader;
     final String appID = null;
