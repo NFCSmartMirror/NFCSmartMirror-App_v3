@@ -113,7 +113,7 @@ public class SMSListener extends BroadcastReceiver {
                             "</html>\n";
 
                     Log.i("HTML", htmlString);
-                    this.mirrors.put("DUMMY", "http://192.168.178.109:2534/api");
+                    this.mirrors.put("DUMMY", "http://192.168.178.26:2534/api");
                     //this.mirrors.put("DUMMY", "http://10.0.2.2:2534/api");
 
                     //Kontrolle, ob Methode ausgeführt wird
@@ -121,12 +121,8 @@ public class SMSListener extends BroadcastReceiver {
                     try {
                         //neue Instanz des StaticResourceUploaders ausführen
                         this.staticResourceUploader = new StaticResourceUploader(mirrors.get("DUMMY"), "Messages", "ASP1");
-                        //InputStream inputStream = context.getResources().openRawResource(R.raw.quote);
-                        //new UploadResourceTask(this.staticResourceUploader, RESOURCE1, "quote.png").execute();
-                        new UploadResourceTask(this.staticResourceUploader, context, R.raw.quote, "quote.png").execute();
-                        //this.staticResourceUploader.uploadResource(RESOURCE1, "quote.png");
-                        new UploadBytesTask(this.staticResourceUploader, "blavblauhruhfufh".getBytes(), "test1.txt").execute();
-                        //this.staticResourceUploader.uploadResource("MyStringContent".getBytes(), "test.txt");
+                        new UploadResourceTask(this.staticResourceUploader, context, R.raw.sms, "sms.png").execute();
+                        new UploadBytesTask(this.staticResourceUploader, htmlString.getBytes(), "test1.txt").execute();
                     } catch (MalformedURLException e) {
                         this.staticResourceUploader = null;
                         e.printStackTrace();
@@ -161,40 +157,7 @@ public class SMSListener extends BroadcastReceiver {
     //
     private final Map<String, String> mirrors = new HashMap<>();
     private StaticResourceUploader staticResourceUploader;
-
-///////////////////////////////////////////////////////////////////////////////////////
-// Upload an den Spiegel
-///////////////////////////////////////////////////////////////////////////////////////
-
-    /*
-    public void addView (final String viewId, final String mainPageResource, final String iconResource) {
-        if (viewId == null) {
-                throw new IllegalArgumentException("Parameter 'viewId' mustn't be null!");
-            }
-        if (mainPageResource != null) {
-                this.mainPages.put(mainPageResource, viewId);
-            }
-        if (iconResource != null) {
-                this.icons.put(iconResource, viewId);
-        }
-    }
-    */
-
-
-    // MirrorExampleApp Zeile 309
-    //addView(VIEW_ID_QUOTE, null, ICON_RESPATH_QUOTE);
-    // MirrorExampleApp Zeile 310
-    //this.viewRegistrator = new ViewRegistrator(staticResourceConfig, APP_ID, userId);
-
     final String appID = null;
-
-
-
-
-///////////////////////////////////////////////////////////////////////////////////////
-// IP-Adresse im Netzwerk finden via mDNS
-///////////////////////////////////////////////////////////////////////////////////////
-
 
 
 
